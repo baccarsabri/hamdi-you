@@ -115,6 +115,7 @@ router.post("/create-checkout-session", async (req, res) => {
 });
 router.post("/webhook", async (req, res) => {
     console.log(req)
+    return res.json(req);
 })
 // Use the router
 app.use('/api', router);
