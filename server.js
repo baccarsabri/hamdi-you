@@ -91,12 +91,7 @@ const apiKey = 'pk_test_51OJOU3GEYGkacqc0Zc76oBKIvQRvl8wWoWUBHVBIRnt90OqJ0wqDF5p
 const secretKey = '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'
 
 const stripe = require("stripe")(secretKey);
-async () => {
-    const webhookEndpoint = await stripe.webhookEndpoints.create({
-        enabled_events: ['*'],
-        url: 'https://backend-youtube-y43m.onrender.com/api/webhook',
-    });
-}
+
 
 router.post("/create-checkout-session", async (req, res) => {
     const { product } = req.body;
@@ -118,6 +113,10 @@ router.post("/create-checkout-session", async (req, res) => {
         success_url: "http://localhost:3000/success",
         cancel_url: "http://localhost:3000/cancel",
     });
+    const webhookEndpoint = await stripe.webhookEndpoints.create({
+        enabled_events: ['*'],
+        url: 'https://backend-youtube-y43m.onrender.com/api/webhook',
+    });
     res.json({ id: session.id });
 });
 router.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
@@ -137,6 +136,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), (request, res
     switch (event.type) {
         case 'payment_intent.succeeded':
             const paymentIntentSucceeded = event.data.object;
+
             // Then define and call a function to handle the event payment_intent.succeeded
             break;
         // ... handle other event types
