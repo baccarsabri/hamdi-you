@@ -148,7 +148,7 @@ const userSchema = new Schema({
 const User = mongoose.model('User', userSchema);
 
 // Connexion à MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/youtube', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://hamdifrik01:Z2AdW9IA7XTWnShJ@cluster0.dv1aqx0.mongodb.net/');
 
 const db = mongoose.connection;
 
