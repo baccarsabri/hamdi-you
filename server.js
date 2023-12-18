@@ -91,6 +91,13 @@ const apiKey = 'pk_test_51OJOU3GEYGkacqc0Zc76oBKIvQRvl8wWoWUBHVBIRnt90OqJ0wqDF5p
 const secretKey = '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'
 
 const stripe = require("stripe")(secretKey);
+async () => {
+    const webhookEndpoint = await stripe.webhookEndpoints.create({
+        enabled_events: ['*'],
+        url: 'https://backend-youtube-y43m.onrender.com/api/webhook',
+    });
+}
+
 router.post("/create-checkout-session", async (req, res) => {
     const { product } = req.body;
     const session = await stripe.checkout.sessions.create({
