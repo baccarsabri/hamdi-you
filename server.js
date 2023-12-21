@@ -124,20 +124,7 @@ router.post(
 
         const endpointSecret = 'whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8';
 
-        if (endpointSecret) {
 
-            const signature = request.headers['stripe-signature'];
-            try {
-                event = stripe.webhooks.constructEvent(
-                    JSON.stringify(request.body),
-                    signature,
-                    endpointSecret
-                );
-            } catch (err) {
-                console.log(`⚠️  Webhook signature verification failed.`, err.message);
-                return response.sendStatus(400);
-            }
-        }
 
 
         switch (event.type) {
