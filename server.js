@@ -115,12 +115,33 @@ router.post("/create-checkout-session", async (req, res) => {
     });
     res.json({ id: session.id });
 });
-router.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
-    console.log('here');
+post('/webhook', async (req, res) => {
+    const payload = req.rawBody;
+    console.log("a:", payload);
+    const sigHeader = req.headers['stripe-signature'];
 
+    let event;
 
-    // Return a 200 response to acknowledge receipt of the event
-    response.send();
+    try {
+        event = stripe.webhooks.constructEvent(payload, sigHeader, 'whsec_sk3iGrKQzxgOeZSonkOH7eoWT1yi6MaU');
+    } catch (err) {
+        console.error('Webhook error:', err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Handle the event
+    switch (event.type) {
+        case 'payment_intent.succeeded':
+            const paymentIntent = event.data.object;
+            // Handle successful payment
+            break;
+        // Add more event handlers as needed
+
+        default:
+            console.log(`Unhandled event type: ${event.type}`);
+    }
+
+    res.json({ received: true });
 });
 // Use the router
 app.use('/api', router);
