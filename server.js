@@ -116,25 +116,42 @@ router.post("/create-checkout-session", async (req, res) => {
     });
     res.json({ id: session.id });
 });
-router.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
-    const sig = request.headers['stripe-signature'];
+app.post(
+    '/webhook',
+    express.raw({ type: 'application/json' }),
+    (request, response) => {
+        let event = request.body;
 
-    let event;
+        const endpointSecret = 'whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8';
 
-    try {
-        event = stripe.webhooks.constructEvent(request.body, sig, "whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8");
-        console.log(event);
-    } catch (err) {
-        response.status(400).send(`Webhook Error: ${err.message}`);
-        return;
+        if (endpointSecret) {
+
+            const signature = request.headers['stripe-signature'];
+            try {
+                event = stripe.webhooks.constructEvent(
+                    request.body,
+                    signature,
+                    endpointSecret
+                );
+            } catch (err) {
+                console.log(`⚠️  Webhook signature verification failed.`, err.message);
+                return response.sendStatus(400);
+            }
+        }
+
+
+        switch (event.type) {
+            case 'payment_intent.succeeded':
+                console.log(event);
+
+                break;
+            default:
+                console.log(`Unhandled event type ${event.type}.`);
+        }
+        response.send();
     }
+);
 
-    // Handle the event
-    console.log(`Unhandled event type ${event.type}`);
-
-    // Return a 200 response to acknowledge receipt of the event
-    response.send();
-});
 // Use the router
 app.use('/api', router);
 
