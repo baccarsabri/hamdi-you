@@ -131,8 +131,9 @@ router.post('/webhook', async (req, res) => {
 
     // Handle the event
     switch (event.type) {
-        case 'payment_intent.succeeded':
+        case 'payment_intent.canceled':
             const paymentIntent = event.data.object;
+            console.log('payment_intent.canceled');
             // Handle successful payment
             break;
         // Add more event handlers as needed
