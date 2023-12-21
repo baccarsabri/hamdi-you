@@ -87,9 +87,8 @@ router.post('/convertToText', async (req, res) => {
 });
 
 
-const apiKey = 'pk_test_51MvOXzBhj9SaeHPHuIGvrNEUbXJHeskrku1EOWOjqJS1NgLcmVuQu4DdlML0iapcA40fw7n8W7Lt9XJFUZTWPGRT00ZHi4pOI8'
-//const secretKey = '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'
-const secretKey = 'sk_test_51MvOXzBhj9SaeHPH4AhDCzRwDHo8s0iwbXvXj0TbYtGTKGSHup9M1wInc2g8u6VIYevevDJNp362YZc0PoceK3Hi00ffWxl10R'
+const apiKey = 'pk_live_51MvOXzBhj9SaeHPHQmVpWmCJLmK1jcv4lwLCg76JPfmtXPXSGX70WwikDlpXY56ocGY4W5FmAcy3Qu06Us7R7cO800hnExtHCz'
+const secretKey = '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'
 
 const stripe = require("stripe")(secretKey);
 
@@ -124,11 +123,12 @@ router.post('/webhook', async (req, res) => {
     let event;
 
     try {
-        event = stripe.webhooks.constructEvent(payload, sigHeader, 'whsec_3jtF9krqyJQm0gBIXMBPuNyCVIadZdhz');
+        event = stripe.webhooks.constructEvent(payload, sigHeader, 'whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8');
     } catch (err) {
         console.error('Webhook error:', err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
+    console.log(event.type);
 
     // Handle the event
     switch (event.type) {
