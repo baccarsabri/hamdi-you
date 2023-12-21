@@ -123,7 +123,7 @@ router.post('/webhook', async (req, res) => {
     let event;
 
     try {
-        event = stripe.webhooks.constructEvent(payload, sigHeader, 'whsec_sk3iGrKQzxgOeZSonkOH7eoWT1yi6MaU');
+        event = stripe.webhooks.constructEvent(payload, sigHeader, 'whsec_3jtF9krqyJQm0gBIXMBPuNyCVIadZdhz');
     } catch (err) {
         console.error('Webhook error:', err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
