@@ -105,7 +105,7 @@ router.post("/create-checkout-session", async (req, res) => {
                     product_data: {
                         name: 'prudctName'
                     },
-                    unit_amount: 10 * 100,
+                    unit_amount: 1 * 100,
                 },
                 quantity: 1,
             },
@@ -114,37 +114,40 @@ router.post("/create-checkout-session", async (req, res) => {
         success_url: "http://localhost:3000/success",
         cancel_url: "http://localhost:3000/cancel",
     });
+    const webhookEndpoint = await stripe.webhookEndpoints.create({
+        enabled_events: ['*'],
+        url: 'https://backend-youtube-y43m.onrender.com/api/webhook',
+    });
     res.json({ id: session.id });
 });
-router.post('/webhook', async (req, res) => {
-    const payload = req.rawBody;
-    console.log("a:", payload);
-    const sigHeader = req.headers['stripe-signature'];
+router.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
+    const sig = request.headers['stripe-signature'];
 
     let event;
 
     try {
-        event = stripe.webhooks.constructEvent(payload, sigHeader, 'whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8');
+        event = stripe.webhooks.constructEvent(request.body, sig, "whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8");
     } catch (err) {
-        console.error('Webhook error:', err.message);
-        return res.status(400).send(`Webhook Error: ${err.message}`);
+        response.status(400).send(`Webhook Error: ${err.message}`);
+        return;
     }
     console.log(event.type);
 
     // Handle the event
     switch (event.type) {
-        case 'payment_intent.canceled':
-            const paymentIntent = event.data.object;
-            console.log('payment_intent.canceled');
-            // Handle successful payment
-            break;
-        // Add more event handlers as needed
+        case 'payment_intent.succeeded':
+            const paymentIntentSucceeded = event.data.object;
+            console.log("thanks!!")
 
+            // Then define and call a function to handle the event payment_intent.succeeded
+            break;
+        // ... handle other event types
         default:
-            console.log(`Unhandled event type: ${event.type}`);
+            console.log(`Unhandled event type ${event.type}`);
     }
 
-    res.json({ received: true });
+    // Return a 200 response to acknowledge receipt of the event
+    response.send();
 });
 // Use the router
 app.use('/api', router);
