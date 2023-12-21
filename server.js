@@ -87,8 +87,8 @@ router.post('/convertToText', async (req, res) => {
 });
 
 
-const apiKey = 'pk_test_51OJOU3GEYGkacqc0Zc76oBKIvQRvl8wWoWUBHVBIRnt90OqJ0wqDF5p0o8mLMdZhoXHIACl5wmTzRkYkFHVI7RHR004dRDa0uU'
-const secretKey = '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'
+const apiKey = 'pk_live_51MvOXzBhj9SaeHPHQmVpWmCJLmK1jcv4lwLCg76JPfmtXPXSGX70WwikDlpXY56ocGY4W5FmAcy3Qu06Us7R7cO800hnExtHCz'
+const secretKey = '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'
 
 const stripe = require("stripe")(secretKey);
 
