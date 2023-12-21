@@ -114,10 +114,6 @@ router.post("/create-checkout-session", async (req, res) => {
         success_url: "http://localhost:3000/success",
         cancel_url: "http://localhost:3000/cancel",
     });
-    const webhookEndpoint = await stripe.webhookEndpoints.create({
-        enabled_events: ['*'],
-        url: 'https://backend-youtube-y43m.onrender.com/api/webhook',
-    });
     res.json({ id: session.id });
 });
 app.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
