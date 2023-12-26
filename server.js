@@ -199,8 +199,8 @@ router.post('/users', async (req, res) => {
 
         //  dates de début et de fin
         userData.dateRange = {
-            startDate: req.body.startDate,
-            endDate: req.body.endDate
+            startDate: null,
+            endDate: null
         };
 
         const newUser = new User(userData);
