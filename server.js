@@ -124,9 +124,10 @@ router.post(
     express.raw({ type: 'application/json' }),
     (request, response) => {
         let event = request.body;
+        //      const endpointSecret = 'whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8';
+        console.log(event.type);
+        console.log(event.data.object.payment_status);
 
-
-        const endpointSecret = 'whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8';
 
         if (event && event.type == "checkout.session.completed" && event.data.object.payment_status == "paid") {
             const userId = event.data.object.metadata.userId;
