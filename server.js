@@ -196,6 +196,7 @@ updateDates = async (id) => {
     const endDate = new Date();
     endDate.setDate(currentDate.getDate() + 30);
     user.dateRange.endDate = endDate;
+    await user.save();
 }
 // (méthode POST)
 router.post('/users', async (req, res) => {
