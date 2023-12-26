@@ -95,7 +95,7 @@ const stripe = require("stripe")(secretKey);
 
 
 router.post("/create-checkout-session", async (req, res) => {
-    const { product, user_Id } = req.body;
+    const { userId } = req.body;
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: [
@@ -133,7 +133,7 @@ router.post(
 
         switch (event.type) {
             case 'payment_intent.succeeded':
-                console.log(event.data.object.metadata.userId);
+                console.log(event.data.object);
 
                 break;
             default:
