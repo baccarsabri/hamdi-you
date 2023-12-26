@@ -128,18 +128,17 @@ router.post(
 
         const endpointSecret = 'whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8';
 
-
-
-
-
-        switch (event.type) {
-            case 'payment_intent.succeeded':
-                console.log(event.data.object);
-
-                break;
-            default:
-                console.log(`Unhandled event type ${event.type}.`);
+        if (event && event.type == "checkout.session.completed" && event.data.object.payment_status == "paid") {
+            const userId = event.data.object.metadata.userId;
+            async () => {
+                const user = await User.findById(userId);
+                console.log(user);
+            }
         }
+
+
+
+
         response.send();
     }
 );
