@@ -103,9 +103,9 @@ router.post("/create-checkout-session", async (req, res) => {
                 price_data: {
                     currency: "usd",
                     product_data: {
-                        name: 'prudctName'
+                        name: 'Abonnement 30 Jours '
                     },
-                    unit_amount: 1 * 100,
+                    unit_amount: 10 * 100,
                 },
                 quantity: 1,
             },
