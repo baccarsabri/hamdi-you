@@ -124,7 +124,7 @@ router.post(
     express.raw({ type: 'application/json' }),
     (request, response) => {
         let event = request.body;
-        console.log(event);
+
 
         const endpointSecret = 'whsec_t7SjNpQ9oUFPLE4fyP8MTKnMJomvpSh8';
 
