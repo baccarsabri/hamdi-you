@@ -132,6 +132,7 @@ router.post(
         if (event && event.type == "checkout.session.completed" && event.data.object.payment_status == "paid") {
             const userId = event.data.object.metadata.userId;
             console.log(userId);
+            updateDates(userId);
 
         }
 
@@ -184,7 +185,18 @@ db.once('open', () => {
     console.log('Connecté à MongoDB');
 });
 
+updateDates = async (id) => {
+    const user = await User.findById(id);
+    const currentDate = new Date();
 
+    // Set the startDate to the current date
+    user.dateRange.startDate = currentDate;
+
+    // Set the endDate to 30 days from now
+    const endDate = new Date();
+    endDate.setDate(currentDate.getDate() + 30);
+    user.dateRange.endDate = endDate;
+}
 // (méthode POST)
 router.post('/users', async (req, res) => {
     try {
