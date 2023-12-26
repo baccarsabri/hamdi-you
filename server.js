@@ -131,10 +131,8 @@ router.post(
 
         if (event && event.type == "checkout.session.completed" && event.data.object.payment_status == "paid") {
             const userId = event.data.object.metadata.userId;
-            async () => {
-                const user = await User.findById(userId);
-                console.log(user);
-            }
+            console.log(userId);
+
         }
 
 
