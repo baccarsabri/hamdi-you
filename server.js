@@ -57,7 +57,7 @@ router.post('/convertToText', async (req, res) => {
             //  console.log(fullText);
             try {
                 const completion = await openai.chat.completions.create({
-                    messages: [{ role: "user", content: `Please summarize this : hello sabro how are you` }],
+                    messages: [{ role: "user", content: `Please summarize this : ${fullText}` }],
                     model: "gpt-3.5-turbo",
 
 
