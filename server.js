@@ -4,7 +4,7 @@ const cors = require("cors");
 const axios = require('axios');
 const OpenAI = require("openai");
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY || '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',
+    apiKey: process.env.OPENAI_API_KEY || '',
 });
 
 
@@ -57,7 +57,7 @@ router.post('/convertToText', async (req, res) => {
             //  console.log(fullText);
             try {
                 const completion = await openai.chat.completions.create({
-                    messages: [{ role: "user", content: `Please summarize this : ${fullText}` }],
+                    messages: [{ role: "user", content: `Please summarize this : hello sabro how are you` }],
                     model: "gpt-3.5-turbo",
 
 
@@ -65,7 +65,7 @@ router.post('/convertToText', async (req, res) => {
                 return res.send({ message: completion.choices[0].message.content });
             }
             catch (e) {
-                return res.send({ message: fullText });
+                return res.send({ message: "le video est trés long" });
 
             }
 
@@ -230,6 +230,29 @@ router.get('/users', async (req, res) => {
     try {
         const users = await User.find();
         res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+// Méthode GET par ID
+router.get('/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ error: 'Invalid user ID' });
+        }
+
+
+        const user = await User.findById(userId);
+
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json(user);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
